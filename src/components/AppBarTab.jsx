@@ -11,11 +11,11 @@ const styles = StyleSheet.create({
   }
 });
 
-const AppBarTab = (props) => {
+const AppBarTab = ({ text, onPress }) => {
   return (
-    <TouchableWithoutFeedback>
+    <TouchableWithoutFeedback onPress={onPress}>
       <Text fontWeight='bold' fontSize='subheading' style={styles.element} >
-        {props.children}
+        {text}
       </Text>
     </TouchableWithoutFeedback>
   );
