@@ -10,7 +10,8 @@ const cardHeaderStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     flexGrow: 1,
-    marginBottom: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
   },
   avatar: {
     width: 45,
@@ -23,6 +24,7 @@ const cardHeaderStyles = StyleSheet.create({
   },
   infoContainer: {
     flexDirection: 'column',
+    flexGrow: 1,
     marginBottom: 5,
   },
   infoContainerText: {
@@ -31,8 +33,8 @@ const cardHeaderStyles = StyleSheet.create({
   languageTag: {
     maxWidth: 100,
     backgroundColor: theme.colors.primary,
-    padding: 8,
     color: 'white',
+    padding: 8,
     borderRadius: 5,
     textAlign: 'center',
   }
@@ -60,7 +62,6 @@ const cardBoxStyles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-between',
     alignItems: 'center',
   },
 });

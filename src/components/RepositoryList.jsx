@@ -5,12 +5,11 @@ import RepositoryItem from './RepositoryItem';
 
 const styles = StyleSheet.create({
   separator: {
-    height: 10,
-    marginBottom: 10,
+    height: 20,
   },
   container: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    flex: 1,
+    flexDirection: 'column',
   }
 });
 
