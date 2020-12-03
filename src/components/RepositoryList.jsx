@@ -6,7 +6,12 @@ import RepositoryItem from './RepositoryItem';
 const styles = StyleSheet.create({
   separator: {
     height: 10,
+    marginBottom: 10,
   },
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 });
 
 const repositories = [
@@ -60,11 +65,14 @@ const ItemSeparator = () => <View style={styles.separator} />;
 
 const RepositoryList = () => {
   return (
-    <FlatList
-      data={repositories}
-      ItemSeparatorComponent={ItemSeparator}
-      renderItem={RepositoryItem}
-    />
+    <View style={styles.container}>
+      <FlatList
+        data={repositories}
+        ItemSeparatorComponent={ItemSeparator}
+        keyExtractor={item => item.id}
+        renderItem={RepositoryItem}
+      />
+    </View>
   );
 };
 
