@@ -25,6 +25,7 @@ const cardHeaderStyles = StyleSheet.create({
   infoContainer: {
     flexDirection: 'column',
     flexGrow: 1,
+    flexShrink: 1,
     marginBottom: 5,
   },
   infoContainerText: {
