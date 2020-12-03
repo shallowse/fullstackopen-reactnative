@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     padding: 15,
     fontSize: theme.fontSizes.subheading,
+    fontFamily: theme.fonts.main,
     borderWidth: 1,
     borderRadius: 5,
     borderColor: 'lightgray',

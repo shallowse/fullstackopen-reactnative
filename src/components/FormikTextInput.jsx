@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginRight: 5,
     padding: 10,
+    fontFamily: theme.fonts.main,
   },
 });
 
