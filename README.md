@@ -6,6 +6,19 @@ Return repository for [Part 10 - React Native](https://fullstackopen.com/en/part
 
 TBD
 
+## Getting started
+
+1. Clone the course provided server repository ```rate-repository-api``` from [here](https://github.com/fullstack-hy2020/rate-repository-api) and follow the installation instructions found from ```README.md``` file.
+
+2. Clone this repository and run `yarn install` in the `fullstackopen-reactnative` directory.
+
+3. Edit the `.env` file in the `fullstackopen-reactnative` directory, update the correct IP address for  the ```APOLLO_URI``` variable.
+
+4. Run ```yarn start```.
+
+5. All done!
+
+
 ## Development environment
 
 Used development environment:
