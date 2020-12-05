@@ -8,7 +8,8 @@ TBD
 
 ## Getting started
 
-1. Clone the course provided server repository ```rate-repository-api``` from [here](https://github.com/fullstack-hy2020/rate-repository-api) and follow the installation instructions found from ```README.md``` file.
+1. Clone the course provided server repository ```rate-repository-api``` from [here](https://github.com/fullstack-hy2020/rate-repository-api) and follow the installation instructions found from ```README.md``` file.  
+NOTE: In case the installation does not work please check from below how to fix possible installation problems!
 
 2. Clone this repository and run `yarn install` in the `fullstackopen-reactnative` directory.
 
