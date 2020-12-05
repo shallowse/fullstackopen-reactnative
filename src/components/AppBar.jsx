@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import Text from './Text';
 
@@ -8,7 +8,7 @@ import { Link } from 'react-router-native';
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
 import { IS_AUTHORIZED } from '../graphql/queries';
 
-import AuthStorageContext from '../contexts/AuthStorageContext';
+import { useAuthStorage } from '../contexts/AuthStorageContext';
 
 import AppBarTab from './AppBarTab';
 import theme from '../theme';
@@ -21,8 +21,8 @@ const styles = StyleSheet.create({
 });
 
 const AppBar = () => {
-  const authStorage = useContext(AuthStorageContext);
-  const { loading, data, error } = useQuery(IS_AUTHORIZED);
+  const authStorage = useAuthStorage();
+  const { loading, data } = useQuery(IS_AUTHORIZED, { fetchPolicy: 'cache-and-network' });
   const apolloClient = useApolloClient();
 
   if (loading) {
