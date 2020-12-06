@@ -50,9 +50,9 @@ const CardHeader = ({ ownerAvatarUrl, fullName, description, language }) => {
       </View>
 
       <View style={cardHeaderStyles.infoContainer}>
-        <Text fontWeight='bold' fontSize='subHeading' style={cardHeaderStyles.infoContainerText}>{fullName}</Text>
-        <Text color='textSecondary' style={cardHeaderStyles.infoContainerText}>{description}</Text>
-        <Text style={cardHeaderStyles.languageTag}>{language}</Text>
+        <Text fontWeight='bold' fontSize='subHeading' style={cardHeaderStyles.infoContainerText} testID='fullName'>{fullName}</Text>
+        <Text color='textSecondary' style={cardHeaderStyles.infoContainerText} testID='description'>{description}</Text>
+        <Text style={cardHeaderStyles.languageTag} testID='language'>{language}</Text>
       </View>
 
     </View>
@@ -79,7 +79,7 @@ const CardBox = ({ valueText, titleText }) => {
 
   return (
     <View style={cardBoxStyles.container}>
-      <Text fontWeight='bold'>{formattedValueText()}</Text>
+      <Text fontWeight='bold' testID={titleText}>{formattedValueText()}</Text>
       <Text>{titleText}</Text>
     </View>
   );
