@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Image, StyleSheet, Button } from 'react-native';
+import { View, Image, StyleSheet, Button, FlatList } from 'react-native';
 import { useParams } from 'react-router-native';
 import * as WebBrowser from 'expo-web-browser';
+import { format, parseISO } from 'date-fns';
 
 import useRepositorySingle from '../hooks/useRepositorySingle';
 
@@ -89,7 +90,57 @@ const CardBox = ({ valueText, titleText }) => {
   );
 };
 
-const repositoryItemStyles = StyleSheet.create({
+const reviewItemStyles = StyleSheet.create({
+  container: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: 'white',
+  },
+  ratingContainer: {
+    flexGrow: 0,
+    paddingRight: 15,
+    borderColor: theme.colors.primary,
+    borderWidth: 2,
+    borderRadius: 24,
+    width: 48,
+    height: 48,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  ratingText: {
+    paddingLeft: 5,
+    fontSize: theme.fontSizes.body,
+    color: theme.colors.primary,
+  },
+});
+
+const ReviewItem = ({ review }) => {
+  const node = review.node;
+  //console.log('node', node);
+
+
+  return (
+    <View style={reviewItemStyles.container}>
+      <View style={cardHeaderStyles.container}>
+
+        <View style={reviewItemStyles.ratingContainer}>
+          <Text style={reviewItemStyles.ratingText}>{node.rating}</Text>
+        </View>
+
+        <View style={cardHeaderStyles.infoContainer}>
+          <Text fontWeight='bold' fontSize='subHeading' style={cardHeaderStyles.infoContainerText}>{node.user.username}</Text>
+          <Text color='textSecondary' style={cardHeaderStyles.infoContainerText}>
+            {format(parseISO(node.createdAt), 'dd.MM.yyyy')}
+          </Text>
+          <Text>{node.text}</Text>
+        </View>
+
+      </View>
+    </View>
+  );
+};
+
+const repositoryInfoStyles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
@@ -100,11 +151,53 @@ const repositoryItemStyles = StyleSheet.create({
     padding: 10,
   },
   button: {
-    marginTop: 50,
+    marginTop: 25,
     marginLeft: 25,
     marginRight: 25,
   }
 });
+
+const RepositoryInfo = ({ repository }) => {
+  const handleOpenWithWebBrowser = () => {
+    WebBrowser.openBrowserAsync(item.url);
+  }
+
+  return (
+    <View style={repositoryInfoStyles.backGround}>
+
+      <CardHeader
+        ownerAvatarUrl={repository.ownerAvatarUrl}
+        fullName={repository.fullName}
+        description={repository.description}
+        language={repository.language}
+      />
+
+      <View style={repositoryInfoStyles.container}>
+        <CardBox titleText='Stars' valueText={repository.stargazersCount} />
+        <CardBox titleText='Forks' valueText={repository.forksCount} />
+        <CardBox titleText='Reviews' valueText={repository.reviewCount} />
+        <CardBox titleText='Rating' valueText={repository.ratingAverage} />
+      </View>
+
+      <View style={repositoryInfoStyles.button}>
+        <Button
+          onPress={handleOpenWithWebBrowser}
+          title='Open in GitHub'
+          color={theme.colors.primary}
+        />
+      </View>
+
+    </View>
+  );
+};
+
+const itemSeparatorStyles = StyleSheet.create({
+  separator: {
+    height: 15,
+  },
+});
+
+const ItemSeparator = () => <View style={itemSeparatorStyles.separator} />;
 
 const RepositoryItemSingle = () => {
   const { id } = useParams();
@@ -118,39 +211,16 @@ const RepositoryItemSingle = () => {
     );
   }
 
-  const item = data.repository;
-  //console.log(item);
-
-  const handleOpenWithWebBrowser = () => {
-    WebBrowser.openBrowserAsync(item.url);
-  }
+  //console.log(data.repository);
 
   return (
-    <View style={repositoryItemStyles.backGround}>
-
-      <CardHeader
-        ownerAvatarUrl={item.ownerAvatarUrl}
-        fullName={item.fullName}
-        description={item.description}
-        language={item.language}
-      />
-
-      <View style={repositoryItemStyles.container}>
-        <CardBox titleText='Stars' valueText={item.stargazersCount} />
-        <CardBox titleText='Forks' valueText={item.forksCount} />
-        <CardBox titleText='Reviews' valueText={item.reviewCount} />
-        <CardBox titleText='Rating' valueText={item.ratingAverage} />
-      </View>
-
-      <View style={repositoryItemStyles.button}>
-        <Button
-          onPress={handleOpenWithWebBrowser}
-          title='Open in GitHub'
-          color={theme.colors.primary}
-        />
-      </View>
-
-    </View>
+    <FlatList
+      data={data.repository.reviews.edges}
+      renderItem={({ item }) => <ReviewItem review={item} />}
+      keyExtractor={item => item.node.id}
+      ListHeaderComponent={() => <RepositoryInfo repository={data.repository} />}
+      ItemSeparatorComponent={ItemSeparator}
+    />
   );
 };
 
