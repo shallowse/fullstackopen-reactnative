@@ -1,6 +1,9 @@
 import React from 'react';
-import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { useHistory } from 'react-router-native';
+import { View, Image, StyleSheet, Button } from 'react-native';
+import { useParams } from 'react-router-native';
+import * as WebBrowser from 'expo-web-browser';
+
+import useRepositorySingle from '../hooks/useRepositorySingle';
 
 import Text from './Text';
 
@@ -95,38 +98,60 @@ const repositoryItemStyles = StyleSheet.create({
   backGround: {
     backgroundColor: 'white',
     padding: 10,
+  },
+  button: {
+    marginTop: 50,
+    marginLeft: 25,
+    marginRight: 25,
   }
 });
 
-const RepositoryItem = ({ item, ...props }) => {
-  const history = useHistory();
+const RepositoryItemSingle = () => {
+  const { id } = useParams();
+  const { data, loading } = useRepositorySingle(id);
 
-  const onPress = () => {
-    //console.log('You clicked', item.id);
-    history.push(`/${item.id}`);
-  };
+  if (loading) {
+    return (
+      <View>
+        <Text>loading...</Text>
+      </View>
+    );
+  }
+
+  const item = data.repository;
+  //console.log(item);
+
+  const handleOpenWithWebBrowser = () => {
+    WebBrowser.openBrowserAsync(item.url);
+  }
 
   return (
-    <TouchableOpacity onPress={onPress}>
-      <View style={repositoryItemStyles.backGround}>
+    <View style={repositoryItemStyles.backGround}>
 
-        <CardHeader
-          ownerAvatarUrl={item.ownerAvatarUrl}
-          fullName={item.fullName}
-          description={item.description}
-          language={item.language}
-        />
+      <CardHeader
+        ownerAvatarUrl={item.ownerAvatarUrl}
+        fullName={item.fullName}
+        description={item.description}
+        language={item.language}
+      />
 
-        <View style={repositoryItemStyles.container}>
-          <CardBox titleText='Stars' valueText={item.stargazersCount} />
-          <CardBox titleText='Forks' valueText={item.forksCount} />
-          <CardBox titleText='Reviews' valueText={item.reviewCount} />
-          <CardBox titleText='Rating' valueText={item.ratingAverage} />
-        </View>
-
+      <View style={repositoryItemStyles.container}>
+        <CardBox titleText='Stars' valueText={item.stargazersCount} />
+        <CardBox titleText='Forks' valueText={item.forksCount} />
+        <CardBox titleText='Reviews' valueText={item.reviewCount} />
+        <CardBox titleText='Rating' valueText={item.ratingAverage} />
       </View>
-    </TouchableOpacity>
+
+      <View style={repositoryItemStyles.button}>
+        <Button
+          onPress={handleOpenWithWebBrowser}
+          title='Open in GitHub'
+          color={theme.colors.primary}
+        />
+      </View>
+
+    </View>
   );
 };
 
-export default RepositoryItem;
+export default RepositoryItemSingle;

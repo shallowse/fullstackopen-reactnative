@@ -27,7 +27,10 @@ export const RepositoryListContainer = ({ repositories }) => {
         data={repositoryNodes}
         ItemSeparatorComponent={ItemSeparator}
         keyExtractor={item => item.id}
-        renderItem={RepositoryItem}
+        //renderItem={RepositoryItem}
+        // To get hooks working in RepositoryItem
+        // https://stackoverflow.com/a/55257123
+        renderItem={obj => <RepositoryItem {...obj} />}
       />
     </View>
   );
