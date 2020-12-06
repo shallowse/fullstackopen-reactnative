@@ -45,13 +45,13 @@ const formStyles = StyleSheet.create({
   }
 });
 
-const SignInForm = ({ onSubmit }) => {
+export const SignInForm = ({ onSubmit }) => {
   return (
     <View style={formStyles.container}>
-      <FormikTextInput name='username' placeholder='Username' />
-      <FormikTextInput name='password' placeholder='Password' secureTextEntry />
+      <FormikTextInput name='username' placeholder='Username' testID='username'/>
+      <FormikTextInput name='password' placeholder='Password' secureTextEntry testID='password'/>
       <TouchableWithoutFeedback onPress={onSubmit}>
-        <Text fontWeight='bold' fontSize='subheading' style={formStyles.button}>Sign in</Text>
+        <Text fontWeight='bold' fontSize='subheading' style={formStyles.button} testID='submit'>Sign in</Text>
       </TouchableWithoutFeedback>
     </View>
   );
