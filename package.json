@@ -26,6 +26,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
     "react-native-web": "~0.11.7",
     "react-router-native": "^5.2.0",
+    "use-debounce": "^5.1.0",
     "yup": "^0.31.1"
   },
   "devDependencies": {

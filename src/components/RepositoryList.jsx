@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-community/picker';
+import { useDebounce } from 'use-debounce';
 
 import Text from './Text';
 import TextInput from './TextInput';
@@ -34,19 +35,19 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const PickerHeaderComponent = ({
+const HeaderComponent = ({
   selectedOrder,
   setSelectedOrder,
-  searchTerm,
-  setSearchTerm,
+  searchKeyword,
+  setSearchKeyword
 }) => {
   return (
     <View>
       <TextInput
-        value={searchTerm}
-        onChangeText={(val) => setSearchTerm(val)}
+        value={searchKeyword}
+        onChangeText={(val) => setSearchKeyword(val)}
         style={styles.searchInput}
-        placeholder='Search terms'
+        placeholder='Search keyword...'
       />
       <Picker
         selectedValue={selectedOrder}
@@ -61,42 +62,51 @@ const PickerHeaderComponent = ({
   );
 };
 
-export const RepositoryListContainer = ({
-  repositories,
-  selectedOrder,
-  setSelectedOrder,
-  searchTerm,
-  setSearchTerm,
-}) => {
-  const repositoryNodes = repositories ? repositories.edges.map(edge => edge.node) : [];
+// For Exercies 10.24: Use class component to prevent focus loss while inputing text
+// https://fullstackopen.com/en/part10/testing_and_extending_our_application#exercises-10-19-10-24
+export class RepositoryListContainer extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-  return (
-    <View style={styles.container}>
-      <FlatList
-        data={repositoryNodes}
-        ItemSeparatorComponent={ItemSeparator}
-        keyExtractor={item => item.id}
-        // To get hooks working in RepositoryItem
-        // https://stackoverflow.com/a/55257123
-        renderItem={obj => <RepositoryItem {...obj} />}
-        ListHeaderComponent={() => <PickerHeaderComponent
-          selectedOrder={selectedOrder}
-          setSelectedOrder={setSelectedOrder}
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
+  renderHeader = () => {
+    const props = this.props;
 
-        />}
+    return (
+      <HeaderComponent
+        selectedOrder={props.selectedOrder}
+        setSelectedOrder={props.setSelectedOrder}
+        searchKeyword={props.searchKeyword}
+        setSearchKeyword={props.setSearchKeyword}
       />
-    </View>
-  );
-};
+    );
+  }
+
+  render() {
+    const repositoryNodes = this.props.repositories ? this.props.repositories.edges.map(edge => edge.node) : [];
+    return (
+      <View style={styles.container}>
+        <FlatList
+          data={repositoryNodes}
+          ItemSeparatorComponent={ItemSeparator}
+          keyExtractor={item => item.id}
+          // To get hooks working in RepositoryItem
+          // https://stackoverflow.com/a/55257123
+          renderItem={obj => <RepositoryItem {...obj} />}
+          ListHeaderComponent={this.renderHeader}
+        />
+      </View>
+    );
+  }
+}
 
 const RepositoryList = () => {
   const [selectedOrder, setSelectedOrder] = useState('latest');
-  const [searchTerm, setSearchTerm] = useState('');
-  const { data, loading } = useRepositories(selectedOrder);
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const [debouncedSearchKeyword] = useDebounce(searchKeyword, 500);
+  const { data, loading } = useRepositories(selectedOrder, debouncedSearchKeyword);
 
-  console.log('MAIN', searchTerm);
+  //console.log('RepositoryList :: searchKeyword', debouncedSearchKeyword);
 
   if (loading) {
     return (
@@ -111,8 +121,8 @@ const RepositoryList = () => {
       repositories={data.repositories}
       selectedOrder={selectedOrder}
       setSelectedOrder={setSelectedOrder}
-      searchTerm={searchTerm}
-      setSearchTerm={setSearchTerm}
+      searchKeyword={searchKeyword}
+      setSearchKeyword={setSearchKeyword}
     />
   );
 };
