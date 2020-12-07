@@ -79,7 +79,7 @@ const SignUpForm = ({ onSubmit }) => {
         </Text>
       </TouchableWithoutFeedback>
     </View>
-  )
+  );
 };
 
 const SignUp = () => {

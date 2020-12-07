@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { GET_REPOSITORIES } from '../graphql/queries';
 
 const useRepositories = (orderValue) => {
-  //console.log('useRepositories :: orderValue', orderValue);
+  console.log('useRepositories :: orderValue', orderValue);
   let queryArguments = {};
 
   switch (orderValue) {
@@ -23,13 +23,13 @@ const useRepositories = (orderValue) => {
       queryArguments = {
         orderBy: 'RATING_AVERAGE',
         orderDirection: 'ASC',
-      }
+      };
       break;
     default:
       queryArguments = {
         orderBy: 'CREATED_AT',
         orderDirection: 'DESC',
-      }
+      };
   }
 
   const { loading, error, data, refetch } = useQuery(GET_REPOSITORIES, {

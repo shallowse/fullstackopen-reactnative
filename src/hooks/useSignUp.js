@@ -12,7 +12,8 @@ const useSignUp = () => {
         password: password,
       }
     });
-  }
+    return data;
+  };
 
   return [signUp, result];
 };

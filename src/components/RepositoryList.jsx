@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import { Picker } from '@react-native-community/picker';
 
 import Text from './Text';
 import useRepositories from '../hooks/useRepositories';
@@ -27,7 +27,21 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-export const RepositoryListContainer = ({ repositories }) => {
+const PickerHeaderComponent = ({ selectedOrder, setSelectedOrder }) => {
+  return (
+    <Picker
+      selectedValue={selectedOrder}
+      style={styles.picker}
+      onValueChange={(itemValue) => setSelectedOrder(itemValue)}
+    >
+      <Picker.Item label='Latest repositories' value='latest' />
+      <Picker.Item label='Highest rated repositories' value='highest' />
+      <Picker.Item label='Lowest rated repositories' value='lowest' />
+    </Picker>
+  );
+};
+
+export const RepositoryListContainer = ({ repositories, selectedOrder, setSelectedOrder }) => {
   const repositoryNodes = repositories ? repositories.edges.map(edge => edge.node) : [];
 
   return (
@@ -39,6 +53,7 @@ export const RepositoryListContainer = ({ repositories }) => {
         // To get hooks working in RepositoryItem
         // https://stackoverflow.com/a/55257123
         renderItem={obj => <RepositoryItem {...obj} />}
+        ListHeaderComponent={() => <PickerHeaderComponent selectedOrder={selectedOrder} setSelectedOrder={setSelectedOrder} />}
       />
     </View>
   );
@@ -57,20 +72,11 @@ const RepositoryList = () => {
   }
 
   return (
-    <View>
-      <Picker
-        selectedValue={selectedOrder}
-        style={styles.picker}
-        onValueChange={(itemValue) => setSelectedOrder(itemValue)}
-      >
-        <Picker.Item label='Latest repositories' value='latest' />
-        <Picker.Item label='Highest rated repositories' value='highest' />
-        <Picker.Item label='Lowest rated repositories' value='lowest' />
-      </Picker>
-
-
-      <RepositoryListContainer repositories={data.repositories} />
-    </View>
+    <RepositoryListContainer
+      repositories={data.repositories}
+      selectedOrder={selectedOrder}
+      setSelectedOrder={setSelectedOrder}
+    />
   );
 };
 
