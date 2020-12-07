@@ -16,7 +16,7 @@ const initialValues = {
   repositoryName: '',
   rating: '',
   text: '',
-}
+};
 
 const validationSchema = yup.object().shape({
   ownerName: yup

@@ -47,7 +47,10 @@ const AppBar = () => {
         <Link to='/' component={AppBarTab} text='Repositories' />
         {
           authorizedUser === null ?
-            <Link to='/signin' component={AppBarTab} text='Sign In' />
+            <>
+              <Link to='/signin' component={AppBarTab} text='Sign in' />
+              <Link to='/signup' component={AppBarTab} text='Sign up' />
+            </>
             :
             <>
               <Link to='/review' component={AppBarTab} text='Create a review' />

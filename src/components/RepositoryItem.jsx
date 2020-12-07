@@ -98,7 +98,7 @@ const repositoryItemStyles = StyleSheet.create({
   }
 });
 
-const RepositoryItem = ({ item, ...props }) => {
+const RepositoryItem = ({ item }) => {
   const history = useHistory();
 
   const onPress = () => {

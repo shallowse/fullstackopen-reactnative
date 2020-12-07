@@ -159,7 +159,7 @@ const repositoryInfoStyles = StyleSheet.create({
 const RepositoryInfo = ({ repository }) => {
   const handleOpenWithWebBrowser = () => {
     WebBrowser.openBrowserAsync(repository.url);
-  }
+  };
 
   return (
     <View style={repositoryInfoStyles.backGround}>
