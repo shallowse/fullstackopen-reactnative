@@ -13,6 +13,19 @@ export const SIGN_IN = gql`
   }
 `;
 
+export const SIGN_UP = gql`
+  mutation createUser (
+    $username: String!
+    $password: String!
+  )
+  {
+    createUser(user: { username: $username, password: $password }) 
+    {
+      createdAt
+    }
+  }
+`;
+
 export const CREATE_REVIEW = gql`
   mutation createReview (
     $ownerName: String!
