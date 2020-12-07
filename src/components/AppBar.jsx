@@ -49,7 +49,10 @@ const AppBar = () => {
           authorizedUser === null ?
             <Link to='/signin' component={AppBarTab} text='Sign In' />
             :
-            <Link component={AppBarTab} text='Sign Out' onPress={handleSignOut} />
+            <>
+              <Link to='/review' component={AppBarTab} text='Create a review' />
+              <Link component={AppBarTab} text='Sign Out' onPress={handleSignOut} />
+            </>
         }
       </ScrollView>
     </View>

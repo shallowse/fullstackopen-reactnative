@@ -115,9 +115,8 @@ const reviewItemStyles = StyleSheet.create({
 });
 
 const ReviewItem = ({ review }) => {
+  //console.log('RepositoryItemSingle :: review', review);
   const node = review.node;
-  //console.log('node', node);
-
 
   return (
     <View style={reviewItemStyles.container}>
@@ -159,7 +158,7 @@ const repositoryInfoStyles = StyleSheet.create({
 
 const RepositoryInfo = ({ repository }) => {
   const handleOpenWithWebBrowser = () => {
-    WebBrowser.openBrowserAsync(item.url);
+    WebBrowser.openBrowserAsync(repository.url);
   }
 
   return (
