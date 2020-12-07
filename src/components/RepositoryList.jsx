@@ -3,6 +3,7 @@ import { FlatList, View, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 
 import Text from './Text';
+import TextInput from './TextInput';
 import useRepositories from '../hooks/useRepositories';
 import RepositoryItem from './RepositoryItem';
 import theme from '../theme';
@@ -22,26 +23,51 @@ const styles = StyleSheet.create({
     fontFamily: theme.fonts.main,
     paddingLeft: 15,
     paddingRight: 15,
+    marginLeft: 5,
+    marginRight: 5,
+  },
+  searchInput: {
+    backgroundColor: 'white',
+    color: 'black',
   }
 });
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const PickerHeaderComponent = ({ selectedOrder, setSelectedOrder }) => {
+const PickerHeaderComponent = ({
+  selectedOrder,
+  setSelectedOrder,
+  searchTerm,
+  setSearchTerm,
+}) => {
   return (
-    <Picker
-      selectedValue={selectedOrder}
-      style={styles.picker}
-      onValueChange={(itemValue) => setSelectedOrder(itemValue)}
-    >
-      <Picker.Item label='Latest repositories' value='latest' />
-      <Picker.Item label='Highest rated repositories' value='highest' />
-      <Picker.Item label='Lowest rated repositories' value='lowest' />
-    </Picker>
+    <View>
+      <TextInput
+        value={searchTerm}
+        onChangeText={(val) => setSearchTerm(val)}
+        style={styles.searchInput}
+        placeholder='Search terms'
+      />
+      <Picker
+        selectedValue={selectedOrder}
+        style={styles.picker}
+        onValueChange={(itemValue) => setSelectedOrder(itemValue)}
+      >
+        <Picker.Item label='Latest repositories' value='latest' />
+        <Picker.Item label='Highest rated repositories' value='highest' />
+        <Picker.Item label='Lowest rated repositories' value='lowest' />
+      </Picker>
+    </View>
   );
 };
 
-export const RepositoryListContainer = ({ repositories, selectedOrder, setSelectedOrder }) => {
+export const RepositoryListContainer = ({
+  repositories,
+  selectedOrder,
+  setSelectedOrder,
+  searchTerm,
+  setSearchTerm,
+}) => {
   const repositoryNodes = repositories ? repositories.edges.map(edge => edge.node) : [];
 
   return (
@@ -53,7 +79,13 @@ export const RepositoryListContainer = ({ repositories, selectedOrder, setSelect
         // To get hooks working in RepositoryItem
         // https://stackoverflow.com/a/55257123
         renderItem={obj => <RepositoryItem {...obj} />}
-        ListHeaderComponent={() => <PickerHeaderComponent selectedOrder={selectedOrder} setSelectedOrder={setSelectedOrder} />}
+        ListHeaderComponent={() => <PickerHeaderComponent
+          selectedOrder={selectedOrder}
+          setSelectedOrder={setSelectedOrder}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+
+        />}
       />
     </View>
   );
@@ -61,7 +93,10 @@ export const RepositoryListContainer = ({ repositories, selectedOrder, setSelect
 
 const RepositoryList = () => {
   const [selectedOrder, setSelectedOrder] = useState('latest');
+  const [searchTerm, setSearchTerm] = useState('');
   const { data, loading } = useRepositories(selectedOrder);
+
+  console.log('MAIN', searchTerm);
 
   if (loading) {
     return (
@@ -76,6 +111,8 @@ const RepositoryList = () => {
       repositories={data.repositories}
       selectedOrder={selectedOrder}
       setSelectedOrder={setSelectedOrder}
+      searchTerm={searchTerm}
+      setSearchTerm={setSearchTerm}
     />
   );
 };
