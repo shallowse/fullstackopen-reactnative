@@ -73,4 +73,5 @@ TBD
 
 ## TODO
 
-The
+The implementation could benefit from refactoring as there are similar or same code used in multiple
+different components (e.g. ```src/components/{MyReviews, RepositoryItem, RepositoryItemSingle}.jsx``` that could be extracted to e.g. a common entity. However, for this course work I decided that the current implementation suffices.
