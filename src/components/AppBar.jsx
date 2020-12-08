@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
+import { useHistory } from 'react-router-native';
 import Text from './Text';
 
 import Constants from 'expo-constants';
@@ -24,6 +25,7 @@ const AppBar = () => {
   const authStorage = useAuthStorage();
   const { loading, data } = useQuery(IS_AUTHORIZED, { fetchPolicy: 'cache-and-network' });
   const apolloClient = useApolloClient();
+  const history = useHistory();
 
   if (loading) {
     return (
@@ -39,6 +41,7 @@ const AppBar = () => {
   const handleSignOut = async () => {
     await authStorage.removeAccessToken();
     apolloClient.resetStore();
+    history.push('/');
   };
 
   return (
@@ -54,6 +57,7 @@ const AppBar = () => {
             :
             <>
               <Link to='/review' component={AppBarTab} text='Create a review' />
+              <Link to='/myreviews' component={AppBarTab} text='My reviews' />
               <Link component={AppBarTab} text='Sign Out' onPress={handleSignOut} />
             </>
         }

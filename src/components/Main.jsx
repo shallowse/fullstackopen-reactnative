@@ -8,6 +8,7 @@ import RepositoryItemSingle from './RepositoryItemSingle';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import Review from './Review';
+import MyReviews from './MyReviews';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,6 +26,7 @@ const Main = () => {
         <Route exact path='/signin' component={SignIn} />
         <Route exact path='/signup' component={SignUp} />
         <Route exact path='/review' component={Review} />
+        <Route exact path='/myreviews' component={MyReviews} />
         <Route exact path='/:id' component={RepositoryItemSingle} />
         <Redirect to='/' />
       </Switch>

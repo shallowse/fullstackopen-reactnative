@@ -3,16 +3,6 @@ import { useQuery } from '@apollo/react-hooks';
 import { GET_SINGLE_REPOSITORY } from '../graphql/queries';
 
 const useRepositorySingle = (variables) => {
-  /*
-  const { loading, error, data } = useQuery(GET_SINGLE_REPOSITORY, {
-    fetchPolicy: 'cache-and-network',
-    variables: {
-      id,
-      first,
-    }
-  });
-  return { data, loading, error };
-  */
 
   const { loading, data, fetchMore, ...result } = useQuery(GET_SINGLE_REPOSITORY, {
     fetchPolicy: 'cache-and-network',

@@ -108,7 +108,7 @@ const RepositoryList = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [debouncedSearchKeyword] = useDebounce(searchKeyword, 500);
   const { repositories, loading, fetchMore } =
-    useRepositories({ selectedOrder, searchKeyword: debouncedSearchKeyword, first: 9 });
+    useRepositories({ selectedOrder, searchKeyword: debouncedSearchKeyword, first: 20 });
 
   //console.log('RepositoryList :: repositories\n', repositories);
   //console.log('RepositoryList :: searchKeyword', debouncedSearchKeyword);
