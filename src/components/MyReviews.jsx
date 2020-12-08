@@ -1,29 +1,26 @@
 import React from 'react';
-import { View, Image, StyleSheet, Button, FlatList } from 'react-native';
+import { View, StyleSheet, Button, FlatList, Alert } from 'react-native';
 import { format, parseISO } from 'date-fns';
+import { useHistory } from 'react-router-native';
 
 import useMyReviews from '../hooks/useMyReviews';
+import useDeleteReview from '../hooks/useDeleteReview';
 
 import Text from './Text';
 
 import theme from '../theme';
 
-// Card implementation inspiration from: https://snack.expo.io/@kalleilv/3d045d
-const cardHeaderStyles = StyleSheet.create({
+const reviewItemStyles = StyleSheet.create({
   container: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: 'white',
+  },
+  containerRow: {
     flexDirection: 'row',
     flexGrow: 1,
     paddingTop: 10,
     paddingBottom: 10,
-  },
-  avatar: {
-    width: 45,
-    height: 45,
-    borderRadius: 5,
-  },
-  avatarContainer: {
-    flexGrow: 0,
-    paddingRight: 15,
   },
   infoContainer: {
     flexDirection: 'column',
@@ -33,66 +30,6 @@ const cardHeaderStyles = StyleSheet.create({
   },
   infoContainerText: {
     marginBottom: 10,
-  },
-  languageTag: {
-    maxWidth: 100,
-    backgroundColor: theme.colors.primary,
-    color: 'white',
-    padding: 8,
-    borderRadius: 5,
-    textAlign: 'center',
-  }
-});
-
-const CardHeader = ({ ownerAvatarUrl, fullName, description, language }) => {
-  return (
-    <View style={cardHeaderStyles.container}>
-
-      <View style={cardHeaderStyles.avatarContainer}>
-        <Image style={cardHeaderStyles.avatar} source={{ uri: ownerAvatarUrl }} />
-      </View>
-
-      <View style={cardHeaderStyles.infoContainer}>
-        <Text fontWeight='bold' fontSize='subHeading' style={cardHeaderStyles.infoContainerText} testID='fullName'>{fullName}</Text>
-        <Text color='textSecondary' style={cardHeaderStyles.infoContainerText} testID='description'>{description}</Text>
-        <Text style={cardHeaderStyles.languageTag} testID='language'>{language}</Text>
-      </View>
-
-    </View>
-  );
-};
-
-const cardBoxStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-});
-
-const CardBox = ({ valueText, titleText }) => {
-  const formattedValueText = () => {
-    if (Number(valueText) < 1000) {
-      return valueText;
-    } else {
-      let retStr = (Number(valueText) / 1000).toFixed(1);
-      return `${retStr}k`;
-    }
-  };
-
-  return (
-    <View style={cardBoxStyles.container}>
-      <Text fontWeight='bold' testID={titleText}>{formattedValueText()}</Text>
-      <Text>{titleText}</Text>
-    </View>
-  );
-};
-
-const reviewItemStyles = StyleSheet.create({
-  container: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: 'white',
   },
   ratingContainer: {
     flexGrow: 0,
@@ -110,34 +47,80 @@ const reviewItemStyles = StyleSheet.create({
     fontSize: theme.fontSizes.body,
     color: theme.colors.primary,
   },
+  button: {
+    marginTop: 10,
+    marginLeft: 25,
+  }
 });
 
-const ReviewItem = ({ review }) => {
+const ReviewItem = ({ review, handleDeleteReview }) => {
+  const history = useHistory();
   const node = review.node;
+
+  const handleViewRepository = () => {
+    history.push(`/${node.repository.id}`);
+  };
+
+  const deleteReview = () => {
+    Alert.alert(
+      'Delete review',
+      'Are you sure you want to delete this review?',
+      [
+        {
+          text: 'CANCEL',
+          onPress: () => console.log('cancelled'),
+        },
+        {
+          text: 'DELETE',
+          onPress: () =>  handleDeleteReview(node.id),
+        }
+      ]
+    );
+    //console.log('you want to delete');
+  };
 
   return (
     <View style={reviewItemStyles.container}>
-      <View style={cardHeaderStyles.container}>
+      <View style={reviewItemStyles.containerRow}>
 
         <View style={reviewItemStyles.ratingContainer}>
           <Text style={reviewItemStyles.ratingText}>{node.rating}</Text>
         </View>
 
-        <View style={cardHeaderStyles.infoContainer}>
+        <View style={reviewItemStyles.infoContainer}>
           <Text
             fontWeight='bold'
             fontSize='subHeading'
-            style={cardHeaderStyles.infoContainerText}
+            style={reviewItemStyles.infoContainerText}
           >
             {node.repository.fullName}
           </Text>
-          <Text color='textSecondary' style={cardHeaderStyles.infoContainerText}>
+          <Text color='textSecondary' style={reviewItemStyles.infoContainerText}>
             {format(parseISO(node.createdAt), 'dd.MM.yyyy')}
           </Text>
           <Text>{node.text}</Text>
         </View>
 
       </View>
+
+      <View style={reviewItemStyles.containerRow}>
+        <View style={reviewItemStyles.button}>
+          <Button
+            onPress={handleViewRepository}
+            title='View repository'
+            color={theme.colors.primary}
+          />
+        </View>
+
+        <View style={reviewItemStyles.button}>
+          <Button
+            onPress={deleteReview}
+            title='Delete review'
+            color={'red'}
+          />
+        </View>
+      </View>
+
     </View>
   );
 };
@@ -151,7 +134,8 @@ const itemSeparatorStyles = StyleSheet.create({
 const ItemSeparator = () => <View style={itemSeparatorStyles.separator} />;
 
 const MyReviews = () => {
-  const { data, loading } = useMyReviews();
+  const { data, loading, refetch } = useMyReviews();
+  const [deleteReview] = useDeleteReview();
 
   if (loading) {
     return (
@@ -161,13 +145,18 @@ const MyReviews = () => {
     );
   }
 
+  const handleDeleteReview = (id) => {
+    deleteReview(id);
+    refetch();
+  };
+
   const reviews = data && data.authorizedUser && data.authorizedUser.reviews || [];
   //console.log('MyReviews :: ', reviews);
 
   return (
     <FlatList
       data={reviews.edges}
-      renderItem={({ item }) => <ReviewItem review={item} />}
+      renderItem={({ item }) => <ReviewItem review={item} handleDeleteReview={handleDeleteReview}/>}
       keyExtractor={item => item.node.id}
       ItemSeparatorComponent={ItemSeparator}
     />

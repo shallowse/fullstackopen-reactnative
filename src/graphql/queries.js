@@ -106,6 +106,7 @@ export const IS_AUTHORIZED = gql`
             createdAt
             repository 
             {
+              id
               fullName
             }
             user 

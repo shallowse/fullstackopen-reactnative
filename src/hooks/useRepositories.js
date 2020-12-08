@@ -42,7 +42,7 @@ const useRepositories = (variables) => {
   queryArguments = {
     ...queryArguments,
     first,
-  }
+  };
 
   //console.log('useRepositories :: queryArguments', queryArguments);
 
