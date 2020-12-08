@@ -2,10 +2,6 @@
 
 Return repository for [Part 10 - React Native](https://fullstackopen.com/en/part10)
 
-## Images of the application
-
-TBD
-
 ## Getting started
 
 1. Clone the course provided server repository ```rate-repository-api``` from [here](https://github.com/fullstack-hy2020/rate-repository-api) and follow the installation instructions found from ```README.md``` file.  
@@ -71,3 +67,10 @@ $ expo -V
 4.0.8
 ```
 
+## Images of the application
+
+TBD
+
+## TODO
+
+The

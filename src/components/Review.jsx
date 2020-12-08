@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useHistory } from 'react-router-native';
 
-import useReview from '../hooks/useReview';
+import useCreateReview from '../hooks/useCreateReview';
 
 import Text from './Text';
 import FormikTextInput from './FormikTextInput';
@@ -81,7 +81,7 @@ const ReviewForm = ({ onSubmit }) => {
 };
 
 const Review = () => {
-  const [createReview] = useReview();
+  const [createReview] = useCreateReview();
   const history = useHistory();
 
   const onSubmit = async (values) => {
