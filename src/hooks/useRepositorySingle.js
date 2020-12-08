@@ -36,21 +36,8 @@ const useRepositorySingle = (variables) => {
         ...variables
       },
       updateQuery: (previousResult, { fetchMoreResult }) => {
-        console.log('PREV', previousResult);
-        console.log('FETCHMORE', fetchMoreResult);
-        /*
-        const nextResult = {
-          repository: {
-            reviews: {
-              ...fetchMoreResult.repository.reviews,
-              edges: [
-                ...previousResult.repository.reviews.edges,
-                ...fetchMoreResult.repository.reviews.edges,
-              ],
-            },
-          },
-        };
-        */
+        //console.log('PREV', previousResult);
+        //console.log('FETCHMORE', fetchMoreResult);
         const nextResult = {
           repository: {
             ...fetchMoreResult.repository,
@@ -63,7 +50,7 @@ const useRepositorySingle = (variables) => {
             },
           },
         };
-        console.log('NEXT', nextResult);
+        //console.log('NEXT', nextResult);
         return nextResult;
       },
     });
