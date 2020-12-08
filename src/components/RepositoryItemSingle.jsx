@@ -213,7 +213,7 @@ const RepositoryItemSingle = () => {
   //console.log(data.repository);
 
   const onEndReach = () => {
-    console.log('RepositoryItemSingle :: You have reached the end of the list');
+    //console.log('RepositoryItemSingle :: You have reached the end of the list');
     fetchMore();
   };
 
