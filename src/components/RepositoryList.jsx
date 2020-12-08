@@ -83,11 +83,14 @@ export class RepositoryListContainer extends React.Component {
   }
 
   render() {
-    const repositoryNodes = this.props.repositories ? this.props.repositories.edges.map(edge => edge.node) : [];
+    const props = this.props;
+    const repositoryNodes = props.repositories ? props.repositories.edges.map(edge => edge.node) : [];
     return (
       <View style={styles.container}>
         <FlatList
           data={repositoryNodes}
+          onEndReached={props.onEndReach}
+          onEndReachedThreshold={0.5}
           ItemSeparatorComponent={ItemSeparator}
           keyExtractor={item => item.id}
           // To get hooks working in RepositoryItem
@@ -104,9 +107,16 @@ const RepositoryList = () => {
   const [selectedOrder, setSelectedOrder] = useState('latest');
   const [searchKeyword, setSearchKeyword] = useState('');
   const [debouncedSearchKeyword] = useDebounce(searchKeyword, 500);
-  const { data, loading } = useRepositories(selectedOrder, debouncedSearchKeyword);
+  const { repositories, loading, fetchMore } =
+    useRepositories({ selectedOrder, searchKeyword: debouncedSearchKeyword, first: 9 });
 
+  //console.log('RepositoryList :: repositories\n', repositories);
   //console.log('RepositoryList :: searchKeyword', debouncedSearchKeyword);
+
+  const onEndReach = () => {
+    console.log('RepositoryList :: You have reached the end of the list');
+    fetchMore();
+  };
 
   if (loading) {
     return (
@@ -118,7 +128,8 @@ const RepositoryList = () => {
 
   return (
     <RepositoryListContainer
-      repositories={data.repositories}
+      repositories={repositories}
+      onEndReach={onEndReach}
       selectedOrder={selectedOrder}
       setSelectedOrder={setSelectedOrder}
       searchKeyword={searchKeyword}

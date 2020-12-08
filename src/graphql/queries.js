@@ -21,13 +21,28 @@ export const GET_REPOSITORIES = gql`
     $orderBy: AllRepositoriesOrderBy!
     $orderDirection: OrderDirection!
     $searchKeyword: String
+    $first: Int!
+    $after: String
   )
   {
-    repositories(orderBy: $orderBy, orderDirection: $orderDirection, searchKeyword: $searchKeyword) {
+    repositories(
+      orderBy: $orderBy
+      orderDirection: $orderDirection
+      searchKeyword: $searchKeyword
+      first: $first
+      after: $after
+      ) 
+    {
       edges {
         node {
           ...RepositoryDetails
         }
+      }
+      pageInfo {
+        endCursor
+        startCursor
+        totalCount
+        hasNextPage
       }
     }
   }
@@ -37,12 +52,14 @@ export const GET_REPOSITORIES = gql`
 export const GET_SINGLE_REPOSITORY = gql`
   query repository(
     $id: ID!
+    $first: Int!
+    $after: String
   ) 
   {
     repository(id: $id) 
     {
       ...RepositoryDetails
-      reviews 
+      reviews(first: $first, after: $after)
       {
         edges 
         {
@@ -57,6 +74,13 @@ export const GET_SINGLE_REPOSITORY = gql`
               username
             }
           }
+        }
+        pageInfo 
+        {
+          endCursor
+          startCursor
+          totalCount
+          hasNextPage
         }
       }
     }
