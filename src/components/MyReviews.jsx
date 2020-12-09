@@ -76,7 +76,6 @@ const ReviewItem = ({ review, handleDeleteReview }) => {
         }
       ]
     );
-    //console.log('you want to delete');
   };
 
   return (

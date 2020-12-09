@@ -115,7 +115,6 @@ const reviewItemStyles = StyleSheet.create({
 });
 
 const ReviewItem = ({ review }) => {
-  //console.log('RepositoryItemSingle :: review', review);
   const node = review.node;
 
   return (
@@ -209,8 +208,6 @@ const RepositoryItemSingle = () => {
       </View>
     );
   }
-
-  //console.log(data.repository);
 
   const onEndReach = () => {
     //console.log('RepositoryItemSingle :: You have reached the end of the list');
