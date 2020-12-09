@@ -67,11 +67,48 @@ $ expo -V
 4.0.8
 ```
 
-## Images of the application
-
-TBD
-
 ## TODO
 
 The implementation could benefit from refactoring as there are similar or same code used in multiple
 different components (e.g. ```src/components/{MyReviews, RepositoryItem, RepositoryItemSingle}.jsx``` that could be extracted to e.g. a common entity. However, for this course work I decided that the current implementation suffices.
+
+
+## Images of the application
+
+Tested with [Expo](https://play.google.com/store/apps/details?id=host.exp.exponent) app in an Android phone running Android version 10.
+
+### View when the app is first opened
+
+![](./images/1.jpg)
+
+### Sorting the reviewed repositories list
+
+![](./images/2.jpg)
+
+### Filtering the reviewed repositories list
+![](./images/3.jpg)
+
+### Sign up form
+![](./images/4.jpg)
+
+### Sign in form
+![](./images/5.jpg)
+
+### After the user has signed in the user is redirected to repository list view
+![](./images/6.jpg)
+
+### Review form
+![](./images/7.jpg)
+
+### Single repository view (redirect situation after a successful review was submitted)
+![](./images/8.jpg)
+
+### The user's reviews (user: addison)
+
+![](./images/9.jpg)
+
+### Review actions (view, delete)
+![](./images/10.jpg)
+
+### Finally, user kalle's reviews view
+![](./images/11.jpg)
